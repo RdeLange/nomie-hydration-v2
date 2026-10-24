@@ -3,6 +3,7 @@
   import { dayKey, streak, lastDays, prune, addDays, type GlassesByDay } from './logic';
   import { paletteFrom, type Palette } from './palette';
   import { offerTracker } from './tracker-offer';
+  import { onPrefsChange } from './prefs-live';
 
   const GOALS = [6, 8, 10];
   const GLASS_SIZES = [200, 250, 330, 500];
@@ -75,7 +76,8 @@
       addToMoreMenu: true,
       addToWidgets: true,
     });
-    plugin.onRegistered(async () => {
+    onPrefsChange(plugin, () => applyNomieValues());
+  plugin.onRegistered(async () => {
       applyNomieValues();
       await load();
     });
