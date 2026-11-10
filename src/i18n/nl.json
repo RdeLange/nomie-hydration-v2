@@ -1,0 +1,21 @@
+{
+  "title": "Hydratatie",
+  "streak": "Reeks",
+  "dayOne": "dag",
+  "dayMany": "dagen",
+  "streakNote": "op je doel. Eén gemiste dag breekt de reeks niet.",
+  "lastSeven": "De afgelopen zeven dagen",
+  "goal": "Doel",
+  "goalChip": "{n} glazen",
+  "glassSize": "Glasgrootte",
+  "mlChip": "{n} ml",
+  "mlOfTotal": "{ml} ml van {total} ml",
+  "addGlass": "+ 1 glas",
+  "removeGlass": "− 1",
+  "removeLabel": "Een glas verwijderen",
+  "addAria": "Een glas water toevoegen",
+  "removeNote": "Een glas verwijderen verandert alleen deze telling. De notities blijven in je tijdlijn.",
+  "trackerLabel": "Water",
+  "trackerQ": "De tracker {label} toevoegen?",
+  "trackerBody": "Deze plugin schrijft #{tag} in je tijdlijn. De tracker nu toevoegen, zodat hij een eigen naam, emoji en kleur krijgt?"
+}

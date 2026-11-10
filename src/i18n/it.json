@@ -1,0 +1,21 @@
+{
+  "title": "Idratazione",
+  "streak": "Serie",
+  "dayOne": "giorno",
+  "dayMany": "giorni",
+  "streakNote": "al tuo obiettivo. Un giorno saltato non interrompe la serie.",
+  "lastSeven": "Gli ultimi sette giorni",
+  "goal": "Obiettivo",
+  "goalChip": "{n} bicchieri",
+  "glassSize": "Dimensione del bicchiere",
+  "mlChip": "{n} ml",
+  "mlOfTotal": "{ml} ml su {total} ml",
+  "addGlass": "+ 1 bicchiere",
+  "removeGlass": "− 1",
+  "removeLabel": "Togli un bicchiere",
+  "addAria": "Aggiungi un bicchiere d'acqua",
+  "removeNote": "Togliere un bicchiere cambia solo questo conteggio. Le note restano nella tua timeline.",
+  "trackerLabel": "Acqua",
+  "trackerQ": "Aggiungere il tracker {label}?",
+  "trackerBody": "Questo plugin scrive #{tag} nella tua timeline. Aggiungere ora il tracker, così ha un nome, un emoji e un colore propri?"
+}

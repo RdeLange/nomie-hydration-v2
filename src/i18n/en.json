@@ -1,0 +1,21 @@
+{
+  "title": "Hydration",
+  "streak": "Streak",
+  "dayOne": "day",
+  "dayMany": "days",
+  "streakNote": "at your goal. One missed day does not break it.",
+  "lastSeven": "The last seven days",
+  "goal": "Goal",
+  "goalChip": "{n} glasses",
+  "glassSize": "Glass size",
+  "mlChip": "{n} ml",
+  "mlOfTotal": "{ml} ml of {total} ml",
+  "addGlass": "+ 1 glass",
+  "removeGlass": "− 1",
+  "removeLabel": "Remove a glass",
+  "addAria": "Add a glass of water",
+  "removeNote": "Removing a glass changes this count only. The notes stay in your timeline.",
+  "trackerLabel": "Water",
+  "trackerQ": "Add the {label} tracker?",
+  "trackerBody": "This plugin writes #{tag} into your timeline. Add the tracker now, so it has its own name, emoji and colour?"
+}

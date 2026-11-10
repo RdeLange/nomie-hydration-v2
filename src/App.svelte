@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { t, setLanguage, currentLanguage } from './i18n/index.svelte';
   import { dayKey, streak, lastDays, prune, addDays, type GlassesByDay } from './logic';
-  import { paletteFrom, type Palette } from './palette';
+  import { paletteFrom, glassFrom, tintTextFrom, type Palette, type Glass } from './palette';
   import { offerTracker } from './tracker-offer';
   import { onPrefsChange } from './prefs-live';
 
@@ -11,6 +12,7 @@
   let plugin: any;
   let view = $state<'modal' | 'widget'>('modal');
   let palette = $state<Palette>(paletteFrom(undefined));
+  let glass = $state<Glass>(glassFrom(undefined));
   let scale = $state(1);
   let glassesByDay = $state<GlassesByDay>({});
   let settings = $state({ goal: 8, glassMl: 250 });
@@ -27,6 +29,8 @@
   const applyNomieValues = () => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    setLanguage(plugin.prefs?.language);
+    glass = glassFrom(plugin.prefs);
     scale = plugin.prefs.fontScale || 1;
   };
 
@@ -89,13 +93,16 @@
     plugin.onUIOpened(async () => {
       view = 'modal';
       applyNomieValues();
-      offerTracker(plugin, { tag: 'water', label: 'Water', emoji: '💧', color: '#32ADE6' });
+      offerTracker(plugin, { tag: 'water', label: t('trackerLabel'), emoji: '💧', color: '#32ADE6' });
       if (!ready) await load();
     });
   });
 </script>
 
-<div class="card" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --scale: {scale};">
+<div class="card" class:widget={view === 'widget'} style="--page: {palette.page}; --card: {palette.card}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --scale: {scale};">
+  {#if view !== 'widget'}
+    <header class="top"><h1>{t('title')}</h1></header>
+  {/if}
   {#if view === 'widget'}
     <div class="head">
       <span aria-hidden="true">💧</span>
@@ -107,56 +114,59 @@
         <span class:filled={i < glasses}>{i < glasses ? '●' : '○'}</span>
       {/each}
     </div>
-    <button class="primary wide" onclick={addGlass} aria-label="Add a glass of water">+ 1 glass</button>
+    <button class="primary wide" onclick={addGlass} aria-label={t('addAria')}>{t('addGlass')}</button>
   {:else}
-    <h1>Hydration</h1>
-    <p class="muted">{today.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+    <p class="muted">{today.toLocaleDateString(currentLanguage(), { weekday: 'long', day: 'numeric', month: 'long' })}</p>
 
     <section class="panel">
       <div class="big">{glasses}<span class="of"> / {settings.goal}</span></div>
       <div class="bar"><div style="width: {progress * 100}%"></div></div>
-      <p class="muted">{Math.round(glasses * settings.glassMl)} ml of {settings.goal * settings.glassMl} ml</p>
+      <p class="muted">{t('mlOfTotal', { ml: Math.round(glasses * settings.glassMl), total: settings.goal * settings.glassMl })}</p>
       <div class="actions">
-        <button class="primary" onclick={addGlass}>+ 1 glass</button>
-        <button class="ghost" onclick={removeGlass} disabled={glasses === 0}>− 1</button>
+        <button class="primary" onclick={addGlass}>{t('addGlass')}</button>
+        <button class="ghost" onclick={removeGlass} disabled={glasses === 0}>{t('removeGlass')}</button>
       </div>
     </section>
 
-    <h2>Streak</h2>
-    <p>🔥 {currentStreak} {currentStreak === 1 ? 'day' : 'days'} at your goal. One missed day does not break it.</p>
+    <h2>{t('streak')}</h2>
+    <p>🔥 {currentStreak} {currentStreak === 1 ? t('dayOne') : t('dayMany')} {t('streakNote')}</p>
 
-    <h2>The last seven days</h2>
+    <h2>{t('lastSeven')}</h2>
     <section class="panel week">
       {#each week as d (d.date.toDateString())}
         <div class="col">
           <div class="column"><div style="height: {(d.glasses / weekMax) * 100}%"></div></div>
-          <span class="label">{d.date.toLocaleDateString(undefined, { weekday: 'short' })}</span>
+          <span class="label">{d.date.toLocaleDateString(currentLanguage(), { weekday: 'short' })}</span>
           <span class="value">{d.glasses}</span>
         </div>
       {/each}
     </section>
 
-    <h2>Goal</h2>
+    <h2>{t('goal')}</h2>
     <div class="chips">
       {#each GOALS as g (g)}
-        <button class:active={settings.goal === g} onclick={() => changeGoal(g)}>{g} glasses</button>
+        <button class:active={settings.goal === g} onclick={() => changeGoal(g)}>{t('goalChip', { n: g })}</button>
       {/each}
     </div>
 
-    <h2>Glass size</h2>
+    <h2>{t('glassSize')}</h2>
     <div class="chips">
       {#each GLASS_SIZES as ml (ml)}
-        <button class:active={settings.glassMl === ml} onclick={() => changeGlass(ml)}>{ml} ml</button>
+        <button class:active={settings.glassMl === ml} onclick={() => changeGlass(ml)}>{t('mlChip', { n: ml })}</button>
       {/each}
     </div>
-    <p class="muted">Removing a glass changes this count only. The notes stay in your timeline.</p>
+    <p class="muted">{t('removeNote')}</p>
   {/if}
 </div>
 
 <style>
+  /* the app's text: its iOS font stack, with the app's smoothing */
+  :global(body) { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; --ios-font-rounded: ui-rounded, -apple-system, system-ui, sans-serif; }
+  /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
+  .top { position: sticky; top: 0; z-index: 2; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .card { box-sizing: border-box; min-height: 100vh; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
   .card.widget { min-height: 0; padding: 12px; font-size: calc(14px * var(--scale)); }
-  h1 { margin: 0 0 2px; font-size: calc(26px * var(--scale)); font-weight: 700; }
+  h1 { margin: 0; font-size: calc(26px * var(--scale)); font-weight: 700; }
   h2 { margin: 20px 0 6px; font-size: calc(13px * var(--scale)); font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .muted { margin: 4px 0; color: var(--muted); }
   .panel { padding: 16px; border-radius: 16px; background: var(--card); }
@@ -164,7 +174,7 @@
   .head .count { margin-left: auto; }
   .glasses { margin: 8px 0; font-size: calc(18px * var(--scale)); letter-spacing: 2px; word-break: break-all; line-height: 1.5; }
   .glasses .filled { color: var(--tint); }
-  .big { font-size: calc(44px * var(--scale)); font-weight: 700; line-height: 1; }
+  .big { font-family: var(--ios-font-rounded); font-size: calc(44px * var(--scale)); font-weight: 700; line-height: 1; }
   .of { font-size: calc(20px * var(--scale)); font-weight: 400; color: var(--muted); }
   .bar { height: 12px; margin: 12px 0 6px; border-radius: 6px; background: var(--fill); overflow: hidden; }
   .bar > div { height: 100%; background: var(--tint); transition: width 0.3s ease; }

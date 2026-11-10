@@ -1,0 +1,21 @@
+{
+  "title": "Hidratación",
+  "streak": "Racha",
+  "dayOne": "día",
+  "dayMany": "días",
+  "streakNote": "en tu objetivo. Un día sin cumplir no rompe la racha.",
+  "lastSeven": "Los últimos siete días",
+  "goal": "Objetivo",
+  "goalChip": "{n} vasos",
+  "glassSize": "Tamaño del vaso",
+  "mlChip": "{n} ml",
+  "mlOfTotal": "{ml} ml de {total} ml",
+  "addGlass": "+ 1 vaso",
+  "removeGlass": "− 1",
+  "removeLabel": "Quitar un vaso",
+  "addAria": "Añadir un vaso de agua",
+  "removeNote": "Quitar un vaso solo cambia este recuento. Las notas siguen en tu línea de tiempo.",
+  "trackerLabel": "Agua",
+  "trackerQ": "¿Añadir el rastreador {label}?",
+  "trackerBody": "Este plugin escribe #{tag} en tu línea de tiempo. ¿Añadir ahora el rastreador, para que tenga su propio nombre, emoji y color?"
+}
